@@ -7,12 +7,23 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
+
 import layout.User_Dialog;
 
 public class MainActivity extends AppCompatActivity
-        implements DialogInterface.OnClickListener {
+        implements DialogInterface.OnClickListener, User_Dialog.callback {
     private TextView m_tv_message;
     private int mChoise;
+    private int LoginCount;
+
+
+    public int getLoginCount() {
+        return LoginCount;
+    }
+
+    public void setLoginCount(int LoginCount) {
+        this.LoginCount = LoginCount;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +80,35 @@ public class MainActivity extends AppCompatActivity
                 })
                 .show();
 
+    }
+
+    @Override
+    public void call(CharSequence username, int which) {
+        switch (which) {
+            case DialogInterface.BUTTON_POSITIVE:
+                LoginCount++;
+                m_tv_message.setText("歡迎光臨"+username+"第"+LoginCount+"登入");
+                break;
+            case DialogInterface.BUTTON_NEGATIVE:
+                m_tv_message.setText("登入取消");
+                break;
+        }
+
+
+    }
+
+    public class AlertDialog_Yes_NoListener implements DialogInterface.OnClickListener {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which) {
+                case DialogInterface.BUTTON_POSITIVE:
+                    m_tv_message.setText("謝謝");
+                    break;
+                case DialogInterface.BUTTON_NEGATIVE:
+                    m_tv_message.setText("狗腿");
+                    break;
+            }
+        }
     }
 
     public void AlertDialog_Item(View view) {
@@ -147,23 +187,10 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
-    public void User_Dialog(View view){
+    public void User_Dialog(View view) {
         DialogFragment dialog = new User_Dialog();
-        dialog.show(getSupportFragmentManager(),"User　Dialog");
+        dialog.show(getSupportFragmentManager(), "User　Dialog");
 
     }
-    public class AlertDialog_Yes_NoListener implements DialogInterface.OnClickListener {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            switch (which) {
-                case DialogInterface.BUTTON_POSITIVE:
-                    m_tv_message.setText("謝謝");
-                    break;
-                case DialogInterface.BUTTON_NEGATIVE:
-                    m_tv_message.setText("狗腿");
-                    break;
-            }
-        }
-    }
+
 }
